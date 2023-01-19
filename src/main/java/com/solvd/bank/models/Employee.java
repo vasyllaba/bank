@@ -8,6 +8,8 @@ public class Employee {
     private Long departmentId;
     private String jobTitle;
     private String officeAddress;
+    private Client client;
+    private Department department;
 
     private static final Logger LOGGER = Logger.getLogger(Employee.class);
 
@@ -80,6 +82,26 @@ public class Employee {
     public void setOfficeAddress(String officeAddress) {
         LOGGER.info("set Employee officeAddress");
         this.officeAddress = officeAddress;
+    }
+
+    public Client getClient() {
+        LOGGER.info("get Employee client");
+        return client;
+    }
+
+    public void setClient(Client client) {
+        LOGGER.info("set Employee client");
+        this.client = client;
+    }
+
+    public Department getDepartment() {
+        LOGGER.info("get Employee department");
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        LOGGER.info("set Employee department");
+        this.department = department;
     }
 
     @Override
