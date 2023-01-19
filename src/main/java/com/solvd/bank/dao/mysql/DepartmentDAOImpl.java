@@ -11,12 +11,12 @@ import java.util.List;
 
 public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentDAO  {
 
-    private static final String GET_DEPARTMENT_BY_ID = "SELECT * FROM departments WHERE id = ?";
+    private static final String GET_DEPARTMENT_BY_ID = "SELECT (id, name) FROM departments WHERE id = ?";
     private static final String UPDATE_DEPARTMENT = "UPDATE departments SET name = ? WHERE id = ?";
     private static final String CREATE_DEPARTMENT = "INSERT INTO departments (name) VALUES (?)";
     private static final String REMOVE_DEPARTMENT = "DELETE FROM departments WHERE Id=?";
 
-    private static final String GET_ALL_DEPARTMENTS = "SELECT * FROM departments";
+    private static final String GET_ALL_DEPARTMENTS = "SELECT (id, name) FROM departments";
 
     private static final Logger LOGGER = Logger.getLogger(DepartmentDAOImpl.class);
 
