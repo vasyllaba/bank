@@ -11,9 +11,9 @@ import com.solvd.bank.models.Employee;
 import java.util.List;
 
 public class EmployeeService {
-    private IEmployeeDAO employeeDAO = new EmployeeDAOImpl();
-    private IClientDAO clientDAO = new ClientDAOImpl();
-    private IDepartmentDAO departmentDAO = new DepartmentDAOImpl();
+    private final IEmployeeDAO employeeDAO = new EmployeeDAOImpl();
+    private final IClientDAO clientDAO = new ClientDAOImpl();
+    private final IDepartmentDAO departmentDAO = new DepartmentDAOImpl();
 
     public List<Employee> getEmployeesByDepartmentID(long id){
         return employeeDAO.getEmployeesByDepartmentId(id);
@@ -24,6 +24,22 @@ public class EmployeeService {
         employee.setClient(clientDAO.getById(employee.getClientID()));
         employee.setDepartment(departmentDAO.getById(employee.getDepartmentId()));
         return employee;
+    }
+
+    public Employee getEmployeeById(long id){
+        return employeeDAO.getById(id);
+    }
+
+    public boolean updateEmployee(Employee employee){
+        return employeeDAO.update(employee);
+    }
+
+    public Employee createEmployee(Employee employee){
+        return employeeDAO.create(employee);
+    }
+
+    public boolean removeEmployee(long id){
+        return employeeDAO.remove(id);
     }
 
 
