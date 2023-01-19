@@ -6,6 +6,8 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
@@ -49,6 +51,35 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
             LOGGER.error(e);
         }
         return mortgage;
+    }
+
+
+    @Override
+    public List<Mortgage> getByCardId(long id) {
+        final Connection connection = ConnectionPool.getConnection();
+        List<Mortgage> mortgages = new LinkedList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(GET_MORTGAGE_BY_ID);) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Mortgage mortgage = new Mortgage();
+                mortgage.setId(id);
+                mortgage.setMortgageTypeId(rs.getLong("morgage_type_id"));
+                mortgage.setClientId(rs.getLong("client_id"));
+                mortgage.setCardId(rs.getLong("card_id"));
+                mortgage.setAmount(rs.getBigDecimal("amount"));
+                mortgage.setTerm(rs.getInt("term"));
+                mortgage.setRate(rs.getDouble("rate"));
+                mortgage.setRegisterDate(rs.getDate("register_date"));
+                mortgage.setEndDate(rs.getDate("end_date"));
+                mortgages.add(mortgage);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return mortgages;
     }
 
     @Override

@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface IEmployeeDAO extends IBaseDAO<Employee>{
     List<Employee> getEmployeesByDepartmentId(long id);
-    Employee getFullEmployeesByID(long id);
 }

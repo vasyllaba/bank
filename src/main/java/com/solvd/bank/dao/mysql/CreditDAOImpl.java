@@ -6,13 +6,19 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
-    private static final String GET_CREDIT_BY_ID = "SELECT * FROM credits WHERE id = ?";
+    private static final String GET_CREDIT_BY_ID =
+            "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE id = ?";
+    private static final String GET_CREDIT_BY_CARD_ID =
+            "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE card_id = ?";
     private static final String UPDATE_CREDIT =
             "UPDATE credits SET client_id = ?, card_id =?, amount=?, term=?, interest_rate=?, register_date=?, end_date=? WHERE id = ?";
-    private static final String CRATE_CREDIT = "INSERT INTO credits (client_id, card_id, amount, term, interest_rate, register_date, end_date) VALUES (?,?,?,?,?,?,?)";
+    private static final String CRATE_CREDIT =
+            "INSERT INTO credits (client_id, card_id, amount, term, interest_rate, register_date, end_date) VALUES (?,?,?,?,?,?,?)";
     private static final String REMOVE_CREDIT = "DELETE FROM credits WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(CreditDAOImpl.class);
@@ -20,41 +26,70 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
     @Override
     public Credit getById(long id) {
         final Connection connection = ConnectionPool.getConnection();
-        Credit cardDetails = new Credit();
+        Credit credit = new Credit();
 
-        try (PreparedStatement ps = connection.prepareStatement(GET_CREDIT_BY_ID);) {
+        try (PreparedStatement ps = connection.prepareStatement(GET_CREDIT_BY_CARD_ID);) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                cardDetails.setId(rs.getLong("id"));
-                cardDetails.setClientId(rs.getLong("client_id"));
-                cardDetails.setCardId(rs.getLong("card_id"));
-                cardDetails.setAmount(rs.getBigDecimal("amount"));
-                cardDetails.setTerm(rs.getInt("term"));
-                cardDetails.setInterestRate(rs.getDouble("interest_rate"));
-                cardDetails.setRegisterDate(rs.getDate("register_date"));
-                cardDetails.setEndDate(rs.getDate("end_date"));
+                credit.setId(rs.getLong("id"));
+                credit.setClientId(rs.getLong("client_id"));
+                credit.setCardId(rs.getLong("card_id"));
+                credit.setAmount(rs.getBigDecimal("amount"));
+                credit.setTerm(rs.getInt("term"));
+                credit.setInterestRate(rs.getDouble("interest_rate"));
+                credit.setRegisterDate(rs.getDate("register_date"));
+                credit.setEndDate(rs.getDate("end_date"));
             }
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return cardDetails;
+        return credit;
     }
 
+
     @Override
-    public boolean update(Credit cardDetails) {
+    public List<Credit> getByCardId(long id) {
+        final Connection connection = ConnectionPool.getConnection();
+        List<Credit> credits = new LinkedList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(GET_CREDIT_BY_ID);) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Credit credit = new Credit();
+                credit.setId(rs.getLong("id"));
+                credit.setClientId(rs.getLong("client_id"));
+                credit.setCardId(rs.getLong("card_id"));
+                credit.setAmount(rs.getBigDecimal("amount"));
+                credit.setTerm(rs.getInt("term"));
+                credit.setInterestRate(rs.getDouble("interest_rate"));
+                credit.setRegisterDate(rs.getDate("register_date"));
+                credit.setEndDate(rs.getDate("end_date"));
+                credits.add(credit);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return credits;
+    }
+
+
+    @Override
+    public boolean update(Credit credit) {
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_CREDIT)) {
-            ps.setLong(1, cardDetails.getClientId());
-            ps.setLong(2, cardDetails.getCardId());
-            ps.setBigDecimal(3, cardDetails.getAmount());
-            ps.setInt(4, cardDetails.getTerm());
-            ps.setDouble(5, cardDetails.getInterestRate());
-            ps.setDate(6, Date.valueOf(cardDetails.getRegisterDate().toString()));
-            ps.setDate(7, Date.valueOf(cardDetails.getEndDate().toString()));
-            ps.setLong(8, cardDetails.getId());
+            ps.setLong(1, credit.getClientId());
+            ps.setLong(2, credit.getCardId());
+            ps.setBigDecimal(3, credit.getAmount());
+            ps.setInt(4, credit.getTerm());
+            ps.setDouble(5, credit.getInterestRate());
+            ps.setDate(6, Date.valueOf(credit.getRegisterDate().toString()));
+            ps.setDate(7, Date.valueOf(credit.getEndDate().toString()));
+            ps.setLong(8, credit.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -64,27 +99,27 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
     }
 
     @Override
-    public Credit create(Credit cardDetails) {
+    public Credit create(Credit credit) {
         final Connection connection = ConnectionPool.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(CRATE_CREDIT, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setLong(1, cardDetails.getClientId());
-            ps.setLong(2, cardDetails.getCardId());
-            ps.setBigDecimal(3, cardDetails.getAmount());
-            ps.setInt(4, cardDetails.getTerm());
-            ps.setDouble(5, cardDetails.getInterestRate());
-            ps.setDate(6, Date.valueOf(cardDetails.getRegisterDate().toString()));
-            ps.setDate(7, Date.valueOf(cardDetails.getEndDate().toString()));
+            ps.setLong(1, credit.getClientId());
+            ps.setLong(2, credit.getCardId());
+            ps.setBigDecimal(3, credit.getAmount());
+            ps.setInt(4, credit.getTerm());
+            ps.setDouble(5, credit.getInterestRate());
+            ps.setDate(6, Date.valueOf(credit.getRegisterDate().toString()));
+            ps.setDate(7, Date.valueOf(credit.getEndDate().toString()));
             ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                cardDetails.setId(rs.getLong(1));
+                credit.setId(rs.getLong(1));
             }
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return cardDetails;
+        return credit;
     }
 
     @Override

@@ -7,12 +7,19 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
     private static final String GET_DEPOSIT_BY_ID = """
             SELECT (id, client_id, deposit_type_id, name, amount, auto_extension, percent_destention,
              regular_replacement, regular_replacement_card_id, term, rate, register_date, end_date)  
              FROM deposits WHERE id = ?
+            """;
+    private static final String GET_DEPOSIT_BY_CARD_ID = """
+            SELECT (id, client_id, deposit_type_id, name, amount, auto_extension, percent_destention,
+             regular_replacement, regular_replacement_card_id, term, rate, register_date, end_date)  
+             FROM deposits WHERE regular_replacement_card_id = ?
             """;
     private static final String UPDATE_DEPOSIT =
             "UPDATE deposits SET name = ?, amount = ?, auto_extension = ?, end_date = ? WHERE id = ?";
@@ -54,6 +61,39 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
             LOGGER.error(e);
         }
         return deposit;
+    }
+
+    @Override
+    public List<Deposit> getByCardId(long id) {
+        Connection connection = ConnectionPool.getConnection();
+        List<Deposit> deposits = new LinkedList<>();
+
+        try(PreparedStatement ps = connection.prepareStatement(GET_DEPOSIT_BY_CARD_ID)){
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Deposit deposit = new Deposit();
+                deposit.setId(rs.getLong(1));
+                deposit.setClientId(rs.getLong(2));
+                deposit.setDepositTypeId(rs.getLong((3)));
+                deposit.setName(rs.getString(4));
+                deposit.setAmount(rs.getBigDecimal(5));
+                deposit.setAutoExtension(rs.getBoolean(6));
+                deposit.setPercentDestination(PercentDestination.valueOf(rs.getString(7)));
+                deposit.setRegularReplacement(rs.getBigDecimal(8));
+                deposit.setRegularReplacementCardId(rs.getLong(9));
+                deposit.setTerm(rs.getInt(10));
+                deposit.setRate(rs.getDouble(11));
+                deposit.setRegisterDate(rs.getDate(12));
+                deposit.setEndDate(rs.getDate(13));
+                deposits.add(deposit);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return deposits;
     }
 
     @Override

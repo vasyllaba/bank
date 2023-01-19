@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Card {
     private Long id;
@@ -21,6 +22,9 @@ public class Card {
     private Integer pin;
     private Client owner;
     private CardDetails details;
+    private List<Deposit> deposits;
+    private List<Credit> credits;
+    private List<Mortgage> mortgages;
 
     private static final Logger LOGGER = Logger.getLogger(Card.class);
 
@@ -188,6 +192,36 @@ public class Card {
     public void setPin(Integer pin) {
         LOGGER.info("set Card pin");
         this.pin = pin;
+    }
+
+    public List<Deposit> getDeposits() {
+        LOGGER.info("get Card deposits");
+        return deposits;
+    }
+
+    public void setDeposits(List<Deposit> deposits) {
+        LOGGER.info("set Card deposits");
+        this.deposits = deposits;
+    }
+
+    public List<Credit> getCredits() {
+        LOGGER.info("get Card credits");
+        return credits;
+    }
+
+    public void setCredits(List<Credit> credits) {
+        LOGGER.info("set Card credits");
+        this.credits = credits;
+    }
+
+    public List<Mortgage> getMortgages() {
+        LOGGER.info("get Card mortgages");
+        return mortgages;
+    }
+
+    public void setMortgages(List<Mortgage> mortgages) {
+        LOGGER.info("set Card mortgages");
+        this.mortgages = mortgages;
     }
 
     @Override
