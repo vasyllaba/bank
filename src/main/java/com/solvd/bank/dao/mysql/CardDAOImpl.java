@@ -41,9 +41,8 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
                 card.setMoneyCount(rs.getBigDecimal("count"));
                 card.setCreditLimit(rs.getBigDecimal("credit_limit"));
                 card.setPin(rs.getInt("pin"));
-
             }
-
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -84,10 +83,12 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
             ps.setInt(10, card.getPin());
             ps.execute();
 
-            ResultSet key = ps.getGeneratedKeys();
-            if (key.next()) {
-                card.setId(key.getLong(1));
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                card.setId(rs.getLong(1));
             }
+            rs.close();
+
         } catch (SQLException e) {
             LOGGER.error(e);
         }

@@ -35,7 +35,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
                 cardDetails.setRegisterDate(rs.getDate("register_date"));
                 cardDetails.setEndDate(rs.getDate("end_date"));
             }
-
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -76,10 +76,11 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
             ps.setDate(7, Date.valueOf(cardDetails.getEndDate().toString()));
             ps.execute();
 
-            ResultSet key = ps.getGeneratedKeys();
-            if (key.next()) {
-                cardDetails.setId(key.getLong(1));
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                cardDetails.setId(rs.getLong(1));
             }
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }

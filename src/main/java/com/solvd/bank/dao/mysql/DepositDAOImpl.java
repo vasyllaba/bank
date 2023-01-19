@@ -49,6 +49,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
                 deposit.setRegisterDate(rs.getDate(12));
                 deposit.setEndDate(rs.getDate(13));
             }
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }

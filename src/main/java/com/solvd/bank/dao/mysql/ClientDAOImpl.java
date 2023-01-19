@@ -34,7 +34,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
                 client.setPassword(rs.getString("password"));
                 client.setRole(Role.valueOf(rs.getString("role")));
             }
-
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -71,10 +71,11 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
             ps.setString(5, client.getRole().getRole());
             ps.execute();
 
-            ResultSet key = ps.getGeneratedKeys();
-            if (key.next()) {
-                client.setId(key.getLong(1));
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                client.setId(rs.getLong(1));
             }
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
