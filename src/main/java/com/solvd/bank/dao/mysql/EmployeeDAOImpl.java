@@ -6,6 +6,8 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
@@ -23,7 +25,37 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
             """;
     private static final String REMOVE_EMPLOYEE = "DELETE FROM employees WHERE Id=?";
 
+    private static final String GET_EMPLOYEES_BY_DEPARTMENT_ID =
+            """
+                SELECT (client_id, department_id, job_title, office_address)
+                FROM employees WHERE department_id = ?
+            """;
+
     private static final Logger LOGGER = Logger.getLogger(EmployeeDAOImpl.class);
+
+    @Override
+    public List<Employee> getEmployeesByDepartmentId(long id) {
+        final Connection connection = ConnectionPool.getConnection();
+        List<Employee> employees = new LinkedList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(GET_EMPLOYEES_BY_DEPARTMENT_ID)) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Employee employee = new Employee();
+                employee.setId(id);
+                employee.setClientID(rs.getLong("client_id"));
+                employee.setDepartmentId(rs.getLong("department_id"));
+                employee.setJobTitle(rs.getString("job_title"));
+                employee.setOfficeAddress(rs.getString("office_address"));
+                employees.add(employee);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return employees;
+    }
 
     @Override
     public Employee getById(long id) {
