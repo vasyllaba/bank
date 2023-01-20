@@ -18,7 +18,23 @@ public class DBConnector {
     private static final String DB_USERNAME = rb.getString("login");
     private static final String DB_PASSWORD = rb.getString("password");
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection createConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+    }
+
+    public static String getUrl(){
+        return DB_URL;
+    }
+
+    public static String getUserName(){
+        return DB_USERNAME;
+    }
+
+    public static String getPassword(){
+        return DB_PASSWORD;
+    }
+
+    public static String getDriver(){
+        return DB_DRIVER;
     }
 }
