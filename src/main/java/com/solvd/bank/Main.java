@@ -1,7 +1,5 @@
 package com.solvd.bank;
 
-import com.solvd.bank.models.Card;
-import com.solvd.bank.services.CardService;
 import com.solvd.bank.services.ClientService;
 
 public class Main {
