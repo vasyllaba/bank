@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
-
+    private static final CreditDAOImpl INSTANCE = new CreditDAOImpl();
     private static final String GET_CREDIT_BY_ID =
             "SELECT id, client_id, card_id, amount, term, interest_rate, register_date, end_date FROM credits WHERE id = ?";
     private static final String GET_CREDIT_BY_CARD_ID =
@@ -25,6 +25,10 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
     private static final String REMOVE_CREDIT = "DELETE FROM credits WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(CreditDAOImpl.class);
+
+    public static CreditDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<Credit> getById(long id) {

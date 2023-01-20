@@ -2,7 +2,6 @@ package com.solvd.bank.dao.mysql;
 
 import com.solvd.bank.dao.IMortgageTypeDAO;
 import com.solvd.bank.enums.Currency;
-import com.solvd.bank.enums.PaymentTimePeriod;
 import com.solvd.bank.models.MortgageType;
 import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
@@ -11,6 +10,7 @@ import java.sql.*;
 import java.util.Optional;
 
 public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
+    private static final MortgageTypeDAOImpl INSTANCE = new MortgageTypeDAOImpl();
     private static final String GET_MORTGAGE_TYPE_BY_ID =
             """
                 SELECT id, max_amount, max_term, min_term, rate, currency
@@ -26,6 +26,10 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
     private static final String REMOVE_MORTGAGE_TYPE = "DELETE FROM mortgage_types WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(MortgageTypeDAOImpl.class);
+
+    public static MortgageTypeDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<MortgageType> getById(long id) {

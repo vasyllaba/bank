@@ -1,14 +1,14 @@
 package com.solvd.bank.services;
 
 import com.solvd.bank.dao.IClientDAO;
-import com.solvd.bank.dao.mysql.ClientDAOImpl;
+import com.solvd.bank.dao.factory.DAOFactory;
 import com.solvd.bank.exception.EntityNotFoundException;
 import com.solvd.bank.exception.IncorrectEmailException;
 import com.solvd.bank.models.Client;
 import org.apache.log4j.Logger;
 
 public class ClientService {
-    private IClientDAO clientDAO = new ClientDAOImpl();
+    private IClientDAO clientDAO = DAOFactory.getFactory().getClientDAOImpl();
 
 
     private static final Logger LOGGER = Logger.getLogger(ClientService.class);
@@ -22,7 +22,9 @@ public class ClientService {
 
     public Client getClientById(long id){
         LOGGER.info("Enter into getClientById method with id: " + id);
-        return clientDAO.getById(id);
+        return clientDAO.getById(id).orElseThrow(
+                () -> new EntityNotFoundException(Client.class, "id", String.valueOf(id))
+        );
     }
 
     public boolean updateClient(Client client){
@@ -35,7 +37,9 @@ public class ClientService {
         if (emailExists(client.getEmail())) {
             throw new IncorrectEmailException("Email " + client.getEmail() + " already exist");
         }
-        return clientDAO.create(client);
+        return clientDAO.create(client).orElseThrow(
+                () -> new EntityNotFoundException("Failed entity creat")
+        );
     }
 
     public boolean removeClient(long id){

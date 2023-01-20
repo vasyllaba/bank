@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
+    private static final DepositDAOImpl INSTANCE = new DepositDAOImpl();
     private static final String GET_DEPOSIT_BY_ID = """
             SELECT id, client_id, deposit_type_id, name, amount, auto_extension, percent_destention,
              regular_replacement, regular_replacement_card_id, term, rate, register_date, end_date
@@ -32,6 +33,10 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
     private static final String REMOVE_DEPOSIT = "DELETE FROM deposits WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(DepositDAOImpl.class);
+
+    public static DepositDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<Deposit> getById(long id) {

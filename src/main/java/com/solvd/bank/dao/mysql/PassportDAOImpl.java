@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.Optional;
 
 public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
-
+    private static final PassportDAOImpl INSTANCE = new PassportDAOImpl();
     private static final String GET_PASSPORT_BY_ID =
             """
                 SELECT first_name, last_name, passport_number, date_of_birth, passport_image
@@ -25,6 +25,10 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
     private static final String REMOVE_PASSPORT = "DELETE FROM passports WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(PassportDAOImpl.class);
+
+    public static PassportDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<Passport> getById(long id) {

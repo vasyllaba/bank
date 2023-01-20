@@ -11,6 +11,9 @@ import java.sql.*;
 import java.util.Optional;
 
 public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
+
+    private static final CardDAOImpl INSTANCE = new CardDAOImpl();
+
     private static final String GET_CARD_BY_ID = "SELECT * FROM cards WHERE id = ?";
     private static final String UPDATE_CARD = "UPDATE cards SET count = ?, credit_limit = ?, pin = ? WHERE id = ?";
     private static final String CRATE_CARD = """
@@ -21,6 +24,10 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
     private static final String REMOVE_CARD = "DELETE FROM cards WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(CardDAOImpl.class);
+
+    public static CardDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<Card> getById(long id) {

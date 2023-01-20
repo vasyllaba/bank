@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.Optional;
 
 public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTypeDAO {
+    private static final DepositTypeDAOImpl INSTANCE = new DepositTypeDAOImpl();
     private static final String GET_DEPOSIT_TYPE_BY_ID =
             """
                 SELECT id, name, is_replenishment, max_replenishment, payment_per_time, min_term, max_term,
@@ -28,6 +29,10 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
     private static final String REMOVE_DEPOSIT_TYPE = "DELETE FROM deposits_types WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(DepositTypeDAOImpl.class);
+
+    public static DepositTypeDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<DepositType> getById(long id) {

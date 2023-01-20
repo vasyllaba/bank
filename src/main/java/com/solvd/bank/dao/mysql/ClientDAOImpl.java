@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.Optional;
 
 public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
-
+    private static final ClientDAOImpl INSTANCE = new ClientDAOImpl();
     private static final String GET_CLIENT_BY_ID =
             "SELECT id, passport_id, mobile, email, password, role FROM clients WHERE id = ?";
     private static final String GET_CLIENT_BY_EMAIL =
@@ -23,6 +23,10 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
             "DELETE FROM clients WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(ClientDAOImpl.class);
+
+    public static ClientDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     /**
      * The method used for getting Client by email from db

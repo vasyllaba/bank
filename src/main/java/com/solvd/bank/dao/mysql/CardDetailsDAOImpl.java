@@ -9,12 +9,17 @@ import java.sql.*;
 import java.util.Optional;
 
 public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetailsDAO {
+    private static final CardDetailsDAOImpl INSTANCE = new CardDetailsDAOImpl();
     private static final String GET_CARD_DETAILS_BY_ID = "SELECT * FROM card_details WHERE id = ?";
     private static final String UPDATE_CARD_DETAILS = "UPDATE card_details SET iban = ? WHERE id = ?";
     private static final String CREATE_CARD_DETAILS = "INSERT INTO card_details (iban) VALUES (?)";
     private static final String REMOVE_CARD_DETAILS = "DELETE FROM card_details WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(CardDetailsDAOImpl.class);
+
+    public static CardDetailsDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<CardDetails> getById(long id) {

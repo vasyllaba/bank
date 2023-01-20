@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
+    private static final EmployeeDAOImpl INSTANCE = new EmployeeDAOImpl();
 
     private static final String GET_EMPLOYEE_BY_ID =
             """
@@ -33,6 +34,11 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
             """;
 
     private static final Logger LOGGER = Logger.getLogger(EmployeeDAOImpl.class);
+
+    public static EmployeeDAOImpl getInstance() {
+        return INSTANCE;
+    }
+
 
     @Override
     public List<Employee> getEmployeesByDepartmentId(long id) {

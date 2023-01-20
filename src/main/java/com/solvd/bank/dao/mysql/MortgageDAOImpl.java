@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
+    private static final MortgageDAOImpl INSTANCE = new MortgageDAOImpl();
 
     private static final String GET_MORTGAGE_BY_ID =
             """
@@ -27,6 +28,10 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
     private static final String REMOVE_MORTGAGE = "DELETE FROM mortgages WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(MortgageDAOImpl.class);
+
+    public static MortgageDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public Optional<Mortgage> getById(long id) {

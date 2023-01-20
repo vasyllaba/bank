@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentDAO  {
-
+    private static final DepartmentDAOImpl INSTANCE = new DepartmentDAOImpl();
     private static final String GET_DEPARTMENT_BY_ID = "SELECT id, name FROM departments WHERE id = ?";
     private static final String UPDATE_DEPARTMENT = "UPDATE departments SET name = ? WHERE id = ?";
     private static final String CREATE_DEPARTMENT = "INSERT INTO departments (name) VALUES (?)";
@@ -20,6 +20,10 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
     private static final String GET_ALL_DEPARTMENTS = "SELECT (id, name) FROM departments";
 
     private static final Logger LOGGER = Logger.getLogger(DepartmentDAOImpl.class);
+
+    public static DepartmentDAOImpl getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public List<Department> getAll() {
