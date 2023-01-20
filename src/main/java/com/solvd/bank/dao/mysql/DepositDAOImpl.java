@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
     private static final String GET_DEPOSIT_BY_ID = """
@@ -33,7 +34,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
     private static final Logger LOGGER = Logger.getLogger(DepositDAOImpl.class);
 
     @Override
-    public Deposit getById(long id) {
+    public Optional<Deposit> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         Connection connection = ConnectionPool.getConnection();
@@ -62,7 +63,10 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return deposit;
+        if (deposit.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(deposit);
     }
 
     @Override
@@ -121,7 +125,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
     }
 
     @Override
-    public Deposit create(Deposit deposit) {
+    public Optional<Deposit> create(Deposit deposit) {
         LOGGER.info("Enter into create method with deposit: " + deposit);
 
         Connection connection = ConnectionPool.getConnection();
@@ -148,7 +152,10 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return deposit;
+        if (deposit.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(deposit);
     }
 
     @Override

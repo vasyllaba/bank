@@ -6,6 +6,7 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
 
@@ -26,7 +27,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
     private static final Logger LOGGER = Logger.getLogger(PassportDAOImpl.class);
 
     @Override
-    public Passport getById(long id) {
+    public Optional<Passport> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
         Passport passport = new Passport();
@@ -46,7 +47,10 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return passport;
+        if (passport.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(passport);
     }
 
     @Override
@@ -70,7 +74,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
     }
 
     @Override
-    public Passport create(Passport passport) {
+    public Optional<Passport> create(Passport passport) {
         LOGGER.info("Enter into create method with passport: " + passport);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -92,7 +96,10 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return passport;
+        if (passport.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(passport);
     }
 
     @Override

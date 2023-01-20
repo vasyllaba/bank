@@ -8,6 +8,7 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
     private static final String GET_MORTGAGE_TYPE_BY_ID =
@@ -27,7 +28,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
     private static final Logger LOGGER = Logger.getLogger(MortgageTypeDAOImpl.class);
 
     @Override
-    public MortgageType getById(long id) {
+    public Optional<MortgageType> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -48,7 +49,10 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return mortgageType;
+        if (mortgageType.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(mortgageType);
     }
 
     @Override
@@ -68,7 +72,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
     }
 
     @Override
-    public MortgageType create(MortgageType mortgageType) {
+    public Optional<MortgageType> create(MortgageType mortgageType) {
         LOGGER.info("Enter into create method with mortgageType: " + mortgageType);
         final Connection connection = ConnectionPool.getConnection();
 
@@ -89,7 +93,10 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return mortgageType;
+        if (mortgageType.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(mortgageType);
     }
 
     @Override

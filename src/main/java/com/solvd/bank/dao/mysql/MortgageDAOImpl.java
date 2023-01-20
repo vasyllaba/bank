@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
@@ -28,7 +29,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
     private static final Logger LOGGER = Logger.getLogger(MortgageDAOImpl.class);
 
     @Override
-    public Mortgage getById(long id) {
+    public Optional<Mortgage> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -52,7 +53,10 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return mortgage;
+        if (mortgage.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(mortgage);
     }
 
 
@@ -105,7 +109,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
     }
 
     @Override
-    public Mortgage create(Mortgage mortgage) {
+    public Optional<Mortgage> create(Mortgage mortgage) {
         LOGGER.info("Enter into create method with mortgage: " + mortgage);
         final Connection connection = ConnectionPool.getConnection();
 
@@ -129,7 +133,10 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return mortgage;
+        if (mortgage.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(mortgage);
     }
 
     @Override

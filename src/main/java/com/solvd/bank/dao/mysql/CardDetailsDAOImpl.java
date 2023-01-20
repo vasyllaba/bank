@@ -6,6 +6,7 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetailsDAO {
     private static final String GET_CARD_DETAILS_BY_ID = "SELECT * FROM card_details WHERE id = ?";
@@ -16,7 +17,7 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
     private static final Logger LOGGER = Logger.getLogger(CardDetailsDAOImpl.class);
 
     @Override
-    public CardDetails getById(long id) {
+    public Optional<CardDetails> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -32,8 +33,12 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return cardDetails;
+        if (cardDetails.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(cardDetails);
     }
 
     @Override
@@ -54,7 +59,7 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
     }
 
     @Override
-    public CardDetails create(CardDetails cardDetails) {
+    public Optional<CardDetails> create(CardDetails cardDetails) {
         LOGGER.info("Enter into create method with cardDetails: " + cardDetails);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -72,8 +77,12 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
 
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return cardDetails;
+        if (cardDetails.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(cardDetails);
     }
 
     @Override

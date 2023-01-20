@@ -60,7 +60,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
     }
 
     @Override
-    public Client getById(long id) {
+    public Optional<Client> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -80,8 +80,13 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return client;
+
+        if (client.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(client);
     }
 
     @Override
@@ -105,7 +110,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
     }
 
     @Override
-    public Client create(Client client) {
+    public Optional<Client> create(Client client) {
         LOGGER.info("Enter into create method with client: " + client);
         final Connection connection = ConnectionPool.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(CRATE_CLIENT, Statement.RETURN_GENERATED_KEYS)) {
@@ -123,8 +128,13 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return client;
+
+        if (client.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(client);
     }
 
     @Override

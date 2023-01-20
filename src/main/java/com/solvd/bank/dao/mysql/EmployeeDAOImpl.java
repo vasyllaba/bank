@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
@@ -60,7 +61,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
     }
 
     @Override
-    public Employee getById(long id) {
+    public Optional<Employee> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -80,7 +81,10 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return employee;
+        if (employee.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(employee);
     }
 
     @Override
@@ -102,7 +106,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
     }
 
     @Override
-    public Employee create(Employee employee) {
+    public Optional<Employee> create(Employee employee) {
         LOGGER.info("Enter into create method with employee: " + employee);
         final Connection connection = ConnectionPool.getConnection();
 
@@ -122,7 +126,10 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return employee;
+        if (employee.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(employee);
     }
 
     @Override

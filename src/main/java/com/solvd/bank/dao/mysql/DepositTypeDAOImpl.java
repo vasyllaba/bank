@@ -8,6 +8,7 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTypeDAO {
     private static final String GET_DEPOSIT_TYPE_BY_ID =
@@ -29,7 +30,7 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
     private static final Logger LOGGER = Logger.getLogger(DepositTypeDAOImpl.class);
 
     @Override
-    public DepositType getById(long id) {
+    public Optional<DepositType> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -54,7 +55,10 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return depositType;
+        if (depositType.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(depositType);
     }
 
     @Override
@@ -77,7 +81,7 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
     }
 
     @Override
-    public DepositType create(DepositType depositType) {
+    public Optional<DepositType> create(DepositType depositType) {
         LOGGER.info("Enter into create method with depositType: " + depositType);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -103,7 +107,10 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return depositType;
+        if (depositType.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(depositType);
     }
 
     @Override

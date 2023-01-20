@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentDAO  {
 
@@ -43,7 +44,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
     }
 
     @Override
-    public Department getById(long id) {
+    public Optional<Department> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -59,8 +60,12 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return department;
+        if (department.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(department);
     }
 
     @Override
@@ -81,7 +86,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
     }
 
     @Override
-    public Department create(Department department) {
+    public Optional<Department> create(Department department) {
         LOGGER.info("Enter into create method with department: " + department);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -97,8 +102,12 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return department;
+        if (department.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(department);
     }
 
     @Override

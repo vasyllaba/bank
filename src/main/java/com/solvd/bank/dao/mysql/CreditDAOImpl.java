@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
@@ -26,7 +27,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
     private static final Logger LOGGER = Logger.getLogger(CreditDAOImpl.class);
 
     @Override
-    public Credit getById(long id) {
+    public Optional<Credit> getById(long id) {
         LOGGER.info("Enter into getById method with id: " + id);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -48,8 +49,12 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return credit;
+        if (credit.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(credit);
     }
 
 
@@ -117,7 +122,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
     }
 
     @Override
-    public Credit create(Credit credit) {
+    public Optional<Credit> create(Credit credit) {
         LOGGER.info("Enter into create method with credit: " + credit);
 
         final Connection connection = ConnectionPool.getConnection();
@@ -138,8 +143,12 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
             rs.close();
         } catch (SQLException e) {
             LOGGER.error(e);
+            return Optional.empty();
         }
-        return credit;
+        if (credit.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(credit);
     }
 
     @Override
