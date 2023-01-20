@@ -17,7 +17,7 @@ public class DepositService {
     private final IDepositTypeDAO depositTypeDAO = new DepositTypeDAOImpl();
     private final ICardDAO cardDAO = new CardDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(DepositService.class);
 
     public Deposit getDepositById(long id){
                 LOGGER.info("Enter into getDepositById method with id: " + id);

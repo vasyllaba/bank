@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 public class PassportService {
     private final IPassportDAO passportDAO = new PassportDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(PassportService.class);
 
 
     public Passport getPassportById(long id) {

@@ -10,7 +10,7 @@ import java.util.List;
 public class DepartmentService {
     private IDepartmentDAO departmentDAO = new DepartmentDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(DepartmentService.class);
 
     public List<Department> getAllDepartments(long id){
         LOGGER.info("Enter into getAllDepartments method with id: " + id);

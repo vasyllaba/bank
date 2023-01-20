@@ -10,7 +10,7 @@ import java.util.List;
 public class CreditService {
     private final ICreditDAO creditDAO = new CreditDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(CreditService.class);
 
     public List<Credit> getCreditsByClientId(long id){
         LOGGER.info("Enter into getCreditsByClientId method with id: " + id);

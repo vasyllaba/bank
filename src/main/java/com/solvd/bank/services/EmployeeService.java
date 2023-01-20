@@ -16,7 +16,7 @@ public class EmployeeService {
     private final IClientDAO clientDAO = new ClientDAOImpl();
     private final IDepartmentDAO departmentDAO = new DepartmentDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(EmployeeService.class);
 
     public List<Employee> getEmployeesByDepartmentID(long id) {
         LOGGER.info("Enter into getEmployeesByDepartmentID method with id: " + id);

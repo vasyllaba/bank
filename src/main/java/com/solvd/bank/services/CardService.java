@@ -13,7 +13,7 @@ public class CardService {
     private final IDepositDAO depositDAO = new DepositDAOImpl();
     private final IMortgageDAO mortgageDAO = new MortgageDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(CardService.class);
 
     public Card getCardWithDetailsById(long id){
         LOGGER.info("Enter into getCardWithDetailsById method with id: " + id);

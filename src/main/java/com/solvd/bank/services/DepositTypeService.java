@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 public class DepositTypeService {
     private final IDepositTypeDAO depositTypeDAO = new DepositTypeDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(DepositTypeService.class);
 
     public DepositType getDepositTypeById(long id) {
         LOGGER.info("Enter into getDepositTypeById method with id: " + id);

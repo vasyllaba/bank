@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 public class MortgageTypeService {
     private final IMortgageTypeDAO mortgageTypeDAO = new MortgageTypeDAOImpl();
 
-    private static final Logger LOGGER = Logger.getLogger(ClientService.class);
+    private static final Logger LOGGER = Logger.getLogger(MortgageTypeService.class);
 
     public MortgageType getMortgageTypeById(long id) {
         LOGGER.info("Enter into getMortgageTypeById method with id: " + id);
