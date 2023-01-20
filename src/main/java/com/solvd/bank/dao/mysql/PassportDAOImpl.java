@@ -48,6 +48,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
                 passport.setPassportImage(rs.getString("passport_image"));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -70,6 +71,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
             ps.setDate(4, Date.valueOf(passport.getDate_of_birth().toString()));
             ps.setString(5, passport.getPassportImage());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -96,7 +98,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
                 passport.setId(rs.getLong(1));
             }
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -114,6 +116,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_PASSPORT)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;

@@ -53,6 +53,7 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
                 card.setPin(rs.getInt("pin"));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -75,6 +76,7 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
             ps.setInt(3, card.getPin());
             ps.setLong(4, card.getId());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
 
@@ -106,7 +108,7 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
                 card.setId(rs.getLong(1));
             }
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -127,6 +129,7 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CARD)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
             return true;
         } catch (SQLException e) {
             LOGGER.error(e);

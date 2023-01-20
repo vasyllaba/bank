@@ -55,6 +55,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
                 mortgage.setEndDate(rs.getDate("end_date"));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -89,6 +90,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
                 mortgages.add(mortgage);
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -106,6 +108,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
             ps.setLong(3, mortgage.getCardId());
             ps.setDate(4, Date.valueOf(mortgage.getEndDate().toString()));
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -134,7 +137,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
                 mortgage.setId(rs.getLong(1));
             }
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -152,6 +155,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_MORTGAGE)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;

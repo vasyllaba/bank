@@ -52,6 +52,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
                 client.setRole(Role.valueOf(rs.getString("role")));
             }
             rs.close();
+
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -82,6 +83,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
                 client.setRole(Role.valueOf(rs.getString("role")));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -106,6 +108,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
             ps.setString(5, client.getRole().getRole());
             ps.setLong(6, client.getId());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -130,6 +133,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
                 client.setId(rs.getLong(1));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -149,6 +153,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CLIENT)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
             return true;
         } catch (SQLException e) {
             LOGGER.error(e);

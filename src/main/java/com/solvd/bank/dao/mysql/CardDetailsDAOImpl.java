@@ -36,6 +36,7 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
                 cardDetails.setIban(rs.getString("iban"));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -56,6 +57,7 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
             ps.setString(1, cardDetails.getIban());
             ps.setLong(2, cardDetails.getId());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -79,7 +81,7 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
                 cardDetails.setId(rs.getLong(1));
             }
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -98,6 +100,7 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CARD_DETAILS)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;

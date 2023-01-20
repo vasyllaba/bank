@@ -60,6 +60,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
                 employees.add(employee);
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -84,6 +85,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
                 employee.setOfficeAddress(rs.getString("office_address"));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -104,6 +106,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
             ps.setString(3, employee.getJobTitle());
             ps.setString(4, employee.getOfficeAddress());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -128,7 +131,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
                 employee.setId(rs.getLong(1));
             }
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -146,6 +149,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_EMPLOYEE)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;

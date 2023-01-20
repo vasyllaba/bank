@@ -50,6 +50,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
                 mortgageType.setCurrency(Currency.valueOf(rs.getString("currency")));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -68,6 +69,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
             ps.setBigDecimal(1, mortgageType.getMaxAmount());
             ps.setLong(2, mortgageType.getId());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -93,7 +95,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
                 mortgageType.setId(rs.getLong(1));
             }
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -111,6 +113,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_MORTGAGE_TYPE)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;

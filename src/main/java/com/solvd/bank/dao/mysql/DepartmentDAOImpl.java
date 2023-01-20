@@ -41,6 +41,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
                 departments.add(department);
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -62,6 +63,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
                 department.setName(rs.getString("name"));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -82,6 +84,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
             ps.setString(1, department.getName());
             ps.setLong(2, department.getId());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -104,6 +107,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
                 department.setId(rs.getLong(1));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -122,6 +126,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_DEPARTMENT)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;

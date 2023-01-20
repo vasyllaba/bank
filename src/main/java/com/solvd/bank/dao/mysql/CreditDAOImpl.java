@@ -51,6 +51,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
                 credit.setEndDate(rs.getDate("end_date"));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -96,6 +97,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
                 credits.add(credit);
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -118,6 +120,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
             ps.setDate(7, Date.valueOf(credit.getEndDate().toString()));
             ps.setLong(8, credit.getId());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -145,6 +148,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
                 credit.setId(rs.getLong(1));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return Optional.empty();
@@ -162,6 +166,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CREDIT)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
             return true;
         } catch (SQLException e) {
             LOGGER.error(e);

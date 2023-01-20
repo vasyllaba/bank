@@ -57,6 +57,7 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
                 depositType.setCurrency(Currency.valueOf(rs.getString("currency")));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -78,6 +79,7 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
             ps.setBigDecimal(3, depositType.getMaxReplenishment());
             ps.setLong(4, depositType.getId());
             ps.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -108,7 +110,7 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
                 depositType.setId(rs.getLong(1));
             }
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -126,6 +128,7 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_DEPOSIT_TYPE)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;

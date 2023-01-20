@@ -65,6 +65,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
                 deposit.setEndDate(rs.getDate(13));
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -103,6 +104,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
                 deposits.add(deposit);
             }
             rs.close();
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -121,6 +123,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
             ps.setBoolean(3, deposit.getAutoExtension());
             ps.setDate(4, Date.valueOf(deposit.getEndDate().toString()));
             ps.setLong(5, deposit.getId());
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -153,7 +156,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) deposit.setId(rs.getLong(1));
             rs.close();
-
+            connection.close();
         } catch (SQLException e) {
             LOGGER.error(e);
         }
@@ -172,6 +175,7 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_DEPOSIT)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.close();
             return true;
         } catch (SQLException e) {
             LOGGER.error(e);
