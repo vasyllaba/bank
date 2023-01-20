@@ -15,7 +15,7 @@ public class CreditService {
     public List<Credit> getCreditsByClientId(long id){
         LOGGER.info("Enter into getCreditsByClientId method with id: " + id);
 
-        return creditDAO.getByCreditsClientId(id);
+        return creditDAO.getCreditsByClientId(id);
     }
 
     public Credit getCreditById(long id){
