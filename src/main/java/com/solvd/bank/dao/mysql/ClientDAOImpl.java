@@ -7,16 +7,57 @@ import com.solvd.bank.utils.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
 
-    private static final String GET_CLIENT_BY_ID = "SELECT * FROM clients WHERE id = ?";
+    private static final String GET_CLIENT_BY_ID =
+            "SELECT (id, passport_id, mobile, email, password, role) FROM clients WHERE id = ?";
+    private static final String GET_CLIENT_BY_EMAIL =
+            "SELECT id, passport_id, mobile, email, password, role FROM clients WHERE email = ?";
     private static final String UPDATE_CLIENT =
             "UPDATE clients SET passport_id = ?, mobile =?, email =?, password =?, role =? WHERE id = ?";
-    private static final String CRATE_CLIENT = "INSERT INTO clients (passport_id, mobile, email, password, role) VALUES (?, ?, ?, ?, ?)";
-    private static final String REMOVE_CLIENT = "DELETE FROM clients WHERE Id=?";
+    private static final String CRATE_CLIENT =
+            "INSERT INTO clients (passport_id, mobile, email, password, role) VALUES (?, ?, ?, ?, ?)";
+    private static final String REMOVE_CLIENT =
+            "DELETE FROM clients WHERE Id=?";
 
     private static final Logger LOGGER = Logger.getLogger(ClientDAOImpl.class);
+
+    /**
+     * The method used for getting Client by email from db
+     *
+     * @param email
+     * @return Client
+     */
+    @Override
+    public Optional<Client> findByEmail(String email) {
+        LOGGER.info("Enter into findByEmail method with email: " + email);
+        final Connection connection = ConnectionPool.getConnection();
+        Client client = new Client();
+
+        try (PreparedStatement ps = connection.prepareStatement(GET_CLIENT_BY_EMAIL)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                client.setId(rs.getLong("id"));
+                client.setPassportId(rs.getLong("passport_id"));
+                client.setMobile(rs.getString("mobile"));
+                client.setEmail(rs.getString("email"));
+                client.setPassword(rs.getString("password"));
+                client.setRole(Role.valueOf(rs.getString("role")));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            LOGGER.error(e);
+            return Optional.empty();
+        }
+
+        if (client.getId() == null) {
+            return Optional.empty();
+        }
+        return Optional.of(client);
+    }
 
     @Override
     public Client getById(long id) {

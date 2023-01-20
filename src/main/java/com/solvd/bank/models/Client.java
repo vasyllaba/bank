@@ -1,7 +1,10 @@
 package com.solvd.bank.models;
 
 import com.solvd.bank.enums.Role;
+import com.solvd.bank.exception.IncorrectEmailException;
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 public class Client {
     private Long id;
@@ -11,6 +14,13 @@ public class Client {
     private String password;
     private Role role;
     private Passport passport;
+    private List<Card> cards;
+    private List<Mortgage> mortgages;
+    private List<Deposit> deposits;
+    private List<Credit> credits;
+
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
+            "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     //to do
 
     private static final Logger LOGGER = Logger.getLogger(Client.class);
@@ -75,6 +85,9 @@ public class Client {
 
     public void setPassword(String password) {
         LOGGER.info("set Client password");
+        if (!email.matches(EMAIL_PATTERN)){
+            throw new IncorrectEmailException("Incorrect email.");
+        }
         this.password = password;
     }
 
