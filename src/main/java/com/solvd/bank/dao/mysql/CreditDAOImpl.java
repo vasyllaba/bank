@@ -15,6 +15,8 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
             "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE id = ?";
     private static final String GET_CREDIT_BY_CARD_ID =
             "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE card_id = ?";
+    private static final String GET_CREDIT_BY_CLIENT_ID =
+            "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE client_id = ?";
     private static final String UPDATE_CREDIT =
             "UPDATE credits SET client_id = ?, card_id =?, amount=?, term=?, interest_rate=?, register_date=?, end_date=? WHERE id = ?";
     private static final String CRATE_CREDIT =
@@ -28,7 +30,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
         final Connection connection = ConnectionPool.getConnection();
         Credit credit = new Credit();
 
-        try (PreparedStatement ps = connection.prepareStatement(GET_CREDIT_BY_CARD_ID);) {
+        try (PreparedStatement ps = connection.prepareStatement(GET_CREDIT_BY_ID);) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -50,11 +52,20 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
 
     @Override
-    public List<Credit> getByCardId(long id) {
+    public List<Credit> getCreditsByCardId(long id) {
+        return getByAnyId(id, GET_CREDIT_BY_CLIENT_ID);
+    }
+
+    @Override
+    public List<Credit> getCreditsByClientId(long id) {
+        return getByAnyId(id, GET_CREDIT_BY_CARD_ID);
+    }
+
+    private List<Credit> getByAnyId(long id, String query){
         final Connection connection = ConnectionPool.getConnection();
         List<Credit> credits = new LinkedList<>();
 
-        try (PreparedStatement ps = connection.prepareStatement(GET_CREDIT_BY_ID);) {
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

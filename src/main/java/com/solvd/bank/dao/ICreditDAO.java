@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ICreditDAO extends IBaseDAO<Credit> {
 
-    List<Credit> getByCardId(long id);
+    List<Credit> getCreditsByCardId(long id);
+    List<Credit> getCreditsByClientId(long id);
 }
