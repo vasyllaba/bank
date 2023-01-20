@@ -1,11 +1,11 @@
 package com.solvd.bank.enums;
 
 public enum Role {
-    EMPLOYEE("Employee"),
-    VIP_CLIENT("Vip client"),
-    GOLD_CLIENT("Gold client"),
-    CLIENT("Client"),
-    UNRELIABLE("Unreliable");
+    EMPLOYEE("EMPLOYEE"),
+    VIP_CLIENT("VIP_CLIENT"),
+    GOLD_CLIENT("GOLD_CLIENT"),
+    CLIENT("CLIENT"),
+    UNRELIABLE("UNRELIABLE");
 
     private final String role;
 
