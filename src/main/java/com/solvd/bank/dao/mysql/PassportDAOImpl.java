@@ -11,7 +11,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
 
     private static final String GET_PASSPORT_BY_ID =
             """
-                SELECT (first_name, last_name, passport_number, date_of_birth, passport_image)
+                SELECT first_name, last_name, passport_number, date_of_birth, passport_image
                 FROM passports WHERE id = ?
             """;
     private static final String UPDATE_PASSPORT =
@@ -27,6 +27,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
 
     @Override
     public Passport getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
         Passport passport = new Passport();
 
@@ -50,6 +51,8 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
 
     @Override
     public boolean update(Passport passport) {
+        LOGGER.info("Enter into update method with passport: " + passport);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_PASSPORT)) {
@@ -68,6 +71,8 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
 
     @Override
     public Passport create(Passport passport) {
+        LOGGER.info("Enter into create method with passport: " + passport);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_PASSPORT, Statement.RETURN_GENERATED_KEYS)) {
@@ -92,6 +97,7 @@ public class PassportDAOImpl extends AbstractMySQLRepo implements IPassportDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_PASSPORT)) {

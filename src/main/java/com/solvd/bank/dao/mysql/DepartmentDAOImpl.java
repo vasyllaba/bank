@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentDAO  {
 
-    private static final String GET_DEPARTMENT_BY_ID = "SELECT (id, name) FROM departments WHERE id = ?";
+    private static final String GET_DEPARTMENT_BY_ID = "SELECT id, name FROM departments WHERE id = ?";
     private static final String UPDATE_DEPARTMENT = "UPDATE departments SET name = ? WHERE id = ?";
     private static final String CREATE_DEPARTMENT = "INSERT INTO departments (name) VALUES (?)";
     private static final String REMOVE_DEPARTMENT = "DELETE FROM departments WHERE Id=?";
@@ -22,6 +22,8 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
 
     @Override
     public List<Department> getAll() {
+        LOGGER.info("Enter into getAll method");
+
         final Connection connection = ConnectionPool.getConnection();
         List<Department> departments = new LinkedList<>();
 
@@ -42,6 +44,8 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
 
     @Override
     public Department getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         Department department = new Department();
 
@@ -61,6 +65,8 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
 
     @Override
     public boolean update(Department department) {
+        LOGGER.info("Enter into update method with department: " + department);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try(PreparedStatement ps = connection.prepareStatement(UPDATE_DEPARTMENT)){
@@ -76,6 +82,8 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
 
     @Override
     public Department create(Department department) {
+        LOGGER.info("Enter into create method with department: " + department);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_DEPARTMENT, Statement.RETURN_GENERATED_KEYS)) {
@@ -95,6 +103,7 @@ public class DepartmentDAOImpl extends AbstractMySQLRepo implements IDepartmentD
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_DEPARTMENT)) {

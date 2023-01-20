@@ -12,8 +12,8 @@ import java.sql.*;
 public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTypeDAO {
     private static final String GET_DEPOSIT_TYPE_BY_ID =
             """
-                SELECT (id, name, is_replenishment, max_replenishment, payment_per_time, min_term, max_term,
-                    no_early_terminate_percent_rate, early_terminate_percent_rate, currency)
+                SELECT id, name, is_replenishment, max_replenishment, payment_per_time, min_term, max_term,
+                    no_early_terminate_percent_rate, early_terminate_percent_rate, currency
                 FROM deposits_types WHERE id = ?
             """;
     private static final String UPDATE_DEPOSIT_TYPE =
@@ -30,6 +30,8 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
 
     @Override
     public DepositType getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         DepositType depositType = new DepositType();
 
@@ -57,6 +59,8 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
 
     @Override
     public boolean update(DepositType depositType) {
+        LOGGER.info("Enter into update method with depositType: " + depositType);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_DEPOSIT_TYPE)) {
@@ -74,6 +78,8 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
 
     @Override
     public DepositType create(DepositType depositType) {
+        LOGGER.info("Enter into create method with depositType: " + depositType);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_DEPOSIT_TYPE, Statement.RETURN_GENERATED_KEYS)) {
@@ -102,6 +108,7 @@ public class DepositTypeDAOImpl extends AbstractMySQLRepo implements IDepositTyp
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_DEPOSIT_TYPE)) {

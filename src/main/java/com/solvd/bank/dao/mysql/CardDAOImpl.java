@@ -23,6 +23,8 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
 
     @Override
     public Card getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         Card card = new Card();
 
@@ -51,6 +53,8 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
 
     @Override
     public boolean update(Card card) {
+        LOGGER.info("Enter into update method with card: " + card);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_CARD)) {
@@ -69,6 +73,8 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
 
     @Override
     public Card create(Card card) {
+        LOGGER.info("Enter into create method with card: " + card);
+
         final Connection connection = ConnectionPool.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(CRATE_CARD, Statement.RETURN_GENERATED_KEYS)) {
             ps.setLong(1, card.getClientId());
@@ -97,6 +103,8 @@ public class CardDAOImpl extends AbstractMySQLRepo implements ICardDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CARD)) {
             preparedStatement.setLong(1, id);

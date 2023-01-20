@@ -12,11 +12,11 @@ import java.util.List;
 public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
     private static final String GET_CREDIT_BY_ID =
-            "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE id = ?";
+            "SELECT id, client_id, card_id, amount, term, interest_rate, register_date, end_date FROM credits WHERE id = ?";
     private static final String GET_CREDIT_BY_CARD_ID =
-            "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE card_id = ?";
+            "SELECT id, client_id, card_id, amount, term, interest_rate, register_date, end_date FROM credits WHERE card_id = ?";
     private static final String GET_CREDIT_BY_CLIENT_ID =
-            "SELECT (id, client_id, card_id, amount, term, interest_rate, register_date, end_date) FROM credits WHERE client_id = ?";
+            "SELECT id, client_id, card_id, amount, term, interest_rate, register_date, end_date FROM credits WHERE client_id = ?";
     private static final String UPDATE_CREDIT =
             "UPDATE credits SET client_id = ?, card_id =?, amount=?, term=?, interest_rate=?, register_date=?, end_date=? WHERE id = ?";
     private static final String CRATE_CREDIT =
@@ -27,6 +27,8 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
     @Override
     public Credit getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         Credit credit = new Credit();
 
@@ -53,15 +55,19 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
     @Override
     public List<Credit> getCreditsByCardId(long id) {
+        LOGGER.info("Enter into getCreditsByCardId method with id: " + id);
         return getByAnyId(id, GET_CREDIT_BY_CLIENT_ID);
     }
 
     @Override
     public List<Credit> getCreditsByClientId(long id) {
+        LOGGER.info("Enter into getCreditsByClientId method with id: " + id);
         return getByAnyId(id, GET_CREDIT_BY_CARD_ID);
     }
 
     private List<Credit> getByAnyId(long id, String query){
+        LOGGER.info("Enter into getByAnyId method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         List<Credit> credits = new LinkedList<>();
 
@@ -90,6 +96,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
     @Override
     public boolean update(Credit credit) {
+        LOGGER.info("Enter into update method with credit: " + credit);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_CREDIT)) {
@@ -111,6 +118,8 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
     @Override
     public Credit create(Credit credit) {
+        LOGGER.info("Enter into create method with credit: " + credit);
+
         final Connection connection = ConnectionPool.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(CRATE_CREDIT, Statement.RETURN_GENERATED_KEYS)) {
             ps.setLong(1, credit.getClientId());
@@ -135,6 +144,7 @@ public class CreditDAOImpl extends AbstractMySQLRepo implements ICreditDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CREDIT)) {
             preparedStatement.setLong(1, id);

@@ -13,7 +13,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
     private static final String GET_MORTGAGE_BY_ID =
             """
-                SELECT (morgage_type_id, client_id, card_id, amount, term, rate, register_date, end_date)
+                SELECT morgage_type_id, client_id, card_id, amount, term, rate, register_date, end_date
                 FROM mortgages WHERE id = ?
             """;
     private static final String UPDATE_MORTGAGE =
@@ -29,6 +29,8 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
     @Override
     public Mortgage getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         Mortgage mortgage = new Mortgage();
 
@@ -56,6 +58,8 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
     @Override
     public List<Mortgage> getByCardId(long id) {
+        LOGGER.info("Enter into getByCardId method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         List<Mortgage> mortgages = new LinkedList<>();
 
@@ -84,6 +88,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
     @Override
     public boolean update(Mortgage mortgage) {
+        LOGGER.info("Enter into update method with mortgage: " + mortgage);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_MORTGAGE)) {
@@ -101,6 +106,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
     @Override
     public Mortgage create(Mortgage mortgage) {
+        LOGGER.info("Enter into create method with mortgage: " + mortgage);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_MORTGAGE, Statement.RETURN_GENERATED_KEYS)) {
@@ -128,6 +134,7 @@ public class MortgageDAOImpl extends AbstractMySQLRepo implements IMortgageDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_MORTGAGE)) {

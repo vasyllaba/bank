@@ -12,13 +12,13 @@ import java.util.List;
 
 public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
     private static final String GET_DEPOSIT_BY_ID = """
-            SELECT (id, client_id, deposit_type_id, name, amount, auto_extension, percent_destention,
-             regular_replacement, regular_replacement_card_id, term, rate, register_date, end_date)  
+            SELECT id, client_id, deposit_type_id, name, amount, auto_extension, percent_destention,
+             regular_replacement, regular_replacement_card_id, term, rate, register_date, end_date
              FROM deposits WHERE id = ?
             """;
     private static final String GET_DEPOSIT_BY_CARD_ID = """
-            SELECT (id, client_id, deposit_type_id, name, amount, auto_extension, percent_destention,
-             regular_replacement, regular_replacement_card_id, term, rate, register_date, end_date)  
+            SELECT id, client_id, deposit_type_id, name, amount, auto_extension, percent_destention,
+             regular_replacement, regular_replacement_card_id, term, rate, register_date, end_date
              FROM deposits WHERE regular_replacement_card_id = ?
             """;
     private static final String UPDATE_DEPOSIT =
@@ -34,6 +34,8 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
 
     @Override
     public Deposit getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         Connection connection = ConnectionPool.getConnection();
         Deposit deposit = new Deposit();
 
@@ -65,6 +67,8 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
 
     @Override
     public List<Deposit> getByCardId(long id) {
+        LOGGER.info("Enter into getByCardId method with id: " + id);
+
         Connection connection = ConnectionPool.getConnection();
         List<Deposit> deposits = new LinkedList<>();
 
@@ -98,6 +102,8 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
 
     @Override
     public boolean update(Deposit deposit) {
+        LOGGER.info("Enter into update method with deposit: " + deposit);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try(PreparedStatement ps = connection.prepareStatement(UPDATE_DEPOSIT)){
@@ -116,6 +122,8 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
 
     @Override
     public Deposit create(Deposit deposit) {
+        LOGGER.info("Enter into create method with deposit: " + deposit);
+
         Connection connection = ConnectionPool.getConnection();
 
         try(PreparedStatement ps = connection.prepareStatement(CREATE_DEPOSIT, Statement.RETURN_GENERATED_KEYS)) {
@@ -145,6 +153,8 @@ public class DepositDAOImpl extends AbstractMySQLRepo implements IDepositDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_DEPOSIT)) {

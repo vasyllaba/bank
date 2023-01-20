@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
 
     private static final String GET_CLIENT_BY_ID =
-            "SELECT (id, passport_id, mobile, email, password, role) FROM clients WHERE id = ?";
+            "SELECT id, passport_id, mobile, email, password, role FROM clients WHERE id = ?";
     private static final String GET_CLIENT_BY_EMAIL =
             "SELECT id, passport_id, mobile, email, password, role FROM clients WHERE email = ?";
     private static final String UPDATE_CLIENT =
@@ -61,6 +61,8 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
 
     @Override
     public Client getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         Client client = new Client();
 
@@ -84,6 +86,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
 
     @Override
     public boolean update(Client client) {
+        LOGGER.info("Enter into update method with client: " + client);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_CLIENT)) {
@@ -103,6 +106,7 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
 
     @Override
     public Client create(Client client) {
+        LOGGER.info("Enter into create method with client: " + client);
         final Connection connection = ConnectionPool.getConnection();
         try (PreparedStatement ps = connection.prepareStatement(CRATE_CLIENT, Statement.RETURN_GENERATED_KEYS)) {
             ps.setLong(1, client.getPassportId());
@@ -125,7 +129,9 @@ public class ClientDAOImpl extends AbstractMySQLRepo implements IClientDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CLIENT)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();

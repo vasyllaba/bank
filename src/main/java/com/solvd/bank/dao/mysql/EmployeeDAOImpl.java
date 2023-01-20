@@ -13,7 +13,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
     private static final String GET_EMPLOYEE_BY_ID =
             """
-                SELECT (client_id, department_id, job_title, office_address)
+                SELECT client_id, department_id, job_title, office_address
                 FROM employees WHERE id = ?
             """;
     private static final String UPDATE_EMPLOYEE =
@@ -27,7 +27,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
     private static final String GET_EMPLOYEES_BY_DEPARTMENT_ID =
             """
-                SELECT (client_id, department_id, job_title, office_address)
+                SELECT client_id, department_id, job_title, office_address
                 FROM employees WHERE department_id = ?
             """;
 
@@ -35,6 +35,8 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
     @Override
     public List<Employee> getEmployeesByDepartmentId(long id) {
+        LOGGER.info("Enter into getEmployeesByDepartmentId method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         List<Employee> employees = new LinkedList<>();
 
@@ -59,6 +61,8 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
     @Override
     public Employee getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         Employee employee = new Employee();
 
@@ -81,6 +85,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
     @Override
     public boolean update(Employee employee) {
+        LOGGER.info("Enter into update method with employee: " + employee);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_EMPLOYEE)) {
@@ -98,6 +103,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
     @Override
     public Employee create(Employee employee) {
+        LOGGER.info("Enter into create method with employee: " + employee);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_EMPLOYEE, Statement.RETURN_GENERATED_KEYS)) {
@@ -121,6 +127,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_EMPLOYEE)) {

@@ -17,6 +17,8 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
 
     @Override
     public CardDetails getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         CardDetails cardDetails = new CardDetails();
 
@@ -36,6 +38,8 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
 
     @Override
     public boolean update(CardDetails cardDetails) {
+        LOGGER.info("Enter into update method with cardDetails: " + cardDetails);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_CARD_DETAILS)) {
@@ -48,15 +52,11 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
         }
         return true;
     }
-    String s =
-    """
-                INSERT INTO deposits_types (id, name, is_replenishment, max_replenishment, payment_per_time, min_term,
-                    max_term, no_early_terminate_percent_rate, early_terminate_percent_rate, currency)
-                VALUES (?,?,?,?,?,?,?,?,?,?)
-            """;
 
     @Override
     public CardDetails create(CardDetails cardDetails) {
+        LOGGER.info("Enter into create method with cardDetails: " + cardDetails);
+
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_CARD_DETAILS, Statement.RETURN_GENERATED_KEYS)) {
@@ -78,6 +78,7 @@ public class CardDetailsDAOImpl extends AbstractMySQLRepo implements ICardDetail
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_CARD_DETAILS)) {

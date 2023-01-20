@@ -12,7 +12,7 @@ import java.sql.*;
 public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
     private static final String GET_MORTGAGE_TYPE_BY_ID =
             """
-                SELECT (id, max_amount, max_term, min_term, rate, currency)
+                SELECT id, max_amount, max_term, min_term, rate, currency
                 FROM mortgage_types WHERE id = ?
             """;
     private static final String UPDATE_MORTGAGE_TYPE =
@@ -28,6 +28,8 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
 
     @Override
     public MortgageType getById(long id) {
+        LOGGER.info("Enter into getById method with id: " + id);
+
         final Connection connection = ConnectionPool.getConnection();
         MortgageType mortgageType = new MortgageType();
 
@@ -51,6 +53,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
 
     @Override
     public boolean update(MortgageType mortgageType) {
+        LOGGER.info("Enter into update method with mortgageType: " + mortgageType);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_MORTGAGE_TYPE)) {
@@ -66,6 +69,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
 
     @Override
     public MortgageType create(MortgageType mortgageType) {
+        LOGGER.info("Enter into create method with mortgageType: " + mortgageType);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_MORTGAGE_TYPE, Statement.RETURN_GENERATED_KEYS)) {
@@ -90,6 +94,7 @@ public class MortgageTypeDAOImpl implements IMortgageTypeDAO {
 
     @Override
     public boolean remove(long id) {
+        LOGGER.info("Enter into remove method with id: " + id);
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_MORTGAGE_TYPE)) {
