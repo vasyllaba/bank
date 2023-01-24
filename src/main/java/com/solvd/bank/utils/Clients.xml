@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<clients xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="Clients.xsd">
+    <client id="1">
+        <passport_id>1</passport_id>
+        <mobile>+380995580161</mobile>
+        <email>someemail@emd.com</email>
+        <password>password</password>
+        <role>CLIENT</role>
+    </client>
+</clients>
