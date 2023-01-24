@@ -1,30 +1,38 @@
 package com.solvd.bank.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
 public class Employee {
+    @JsonProperty("id")
     private Long id;
-    private Long clientID;
+    @JsonProperty("clientId")
+    private Long clientId;
+    @JsonProperty("departmentId")
     private Long departmentId;
+    @JsonProperty("jobTitle")
     private String jobTitle;
+    @JsonProperty("officeAddress")
     private String officeAddress;
+    @JsonProperty("client")
     private Client client;
+    @JsonProperty("department")
     private Department department;
 
     private static final Logger LOGGER = Logger.getLogger(Employee.class);
 
-    public Employee(Long id, Long clientID, Long departmentId, String jobTitle, String officeAddress) {
+    public Employee(Long id, Long clientId, Long departmentId, String jobTitle, String officeAddress) {
         LOGGER.info("create new Employee with id = " + id);
         this.id = id;
-        this.clientID = clientID;
+        this.clientId = clientId;
         this.departmentId = departmentId;
         this.jobTitle = jobTitle;
         this.officeAddress = officeAddress;
     }
 
-    public Employee(Long clientID, Long departmentId, String jobTitle, String officeAddress) {
+    public Employee(Long clientId, Long departmentId, String jobTitle, String officeAddress) {
         LOGGER.info("create new Employee with params");
-        this.clientID = clientID;
+        this.clientId = clientId;
         this.departmentId = departmentId;
         this.jobTitle = jobTitle;
         this.officeAddress = officeAddress;
@@ -44,14 +52,14 @@ public class Employee {
         this.id = id;
     }
 
-    public Long getClientID() {
+    public Long getClientId() {
         LOGGER.info("get Employee id");
-        return clientID;
+        return clientId;
     }
 
-    public void setClientID(Long clientID) {
+    public void setClientId(Long clientId) {
         LOGGER.info("set Employee clientID");
-        this.clientID = clientID;
+        this.clientId = clientId;
     }
 
     public Long getDepartmentId() {
@@ -113,7 +121,7 @@ public class Employee {
         Employee employee = (Employee) o;
 
         if (getId() != null ? !getId().equals(employee.getId()) : employee.getId() != null) return false;
-        if (getClientID() != null ? !getClientID().equals(employee.getClientID()) : employee.getClientID() != null)
+        if (getClientId() != null ? !getClientId().equals(employee.getClientId()) : employee.getClientId() != null)
             return false;
         if (getDepartmentId() != null ? !getDepartmentId().equals(employee.getDepartmentId()) : employee.getDepartmentId() != null)
             return false;
@@ -126,7 +134,7 @@ public class Employee {
     public int hashCode() {
         LOGGER.info("call hashCode method");
         int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getClientID() != null ? getClientID().hashCode() : 0);
+        result = 31 * result + (getClientId() != null ? getClientId().hashCode() : 0);
         result = 31 * result + (getDepartmentId() != null ? getDepartmentId().hashCode() : 0);
         result = 31 * result + (getJobTitle() != null ? getJobTitle().hashCode() : 0);
         result = 31 * result + (getOfficeAddress() != null ? getOfficeAddress().hashCode() : 0);
@@ -138,7 +146,7 @@ public class Employee {
         LOGGER.info("call toString method");
         return "Employee{" +
                 "id=" + id +
-                ", clientID=" + clientID +
+                ", clientID=" + clientId +
                 ", departmentId=" + departmentId +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", officeAddress='" + officeAddress + '\'' +

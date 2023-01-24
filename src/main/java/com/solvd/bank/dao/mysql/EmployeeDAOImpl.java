@@ -53,7 +53,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
             while (rs.next()) {
                 Employee employee = new Employee();
                 employee.setId(id);
-                employee.setClientID(rs.getLong("client_id"));
+                employee.setClientId(rs.getLong("client_id"));
                 employee.setDepartmentId(rs.getLong("department_id"));
                 employee.setJobTitle(rs.getString("job_title"));
                 employee.setOfficeAddress(rs.getString("office_address"));
@@ -79,7 +79,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 employee.setId(id);
-                employee.setClientID(rs.getLong("client_id"));
+                employee.setClientId(rs.getLong("client_id"));
                 employee.setDepartmentId(rs.getLong("department_id"));
                 employee.setJobTitle(rs.getString("job_title"));
                 employee.setOfficeAddress(rs.getString("office_address"));
@@ -101,7 +101,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_EMPLOYEE)) {
-            ps.setLong(1, employee.getClientID());
+            ps.setLong(1, employee.getClientId());
             ps.setLong(2, employee.getDepartmentId());
             ps.setString(3, employee.getJobTitle());
             ps.setString(4, employee.getOfficeAddress());
@@ -120,7 +120,7 @@ public class EmployeeDAOImpl extends AbstractMySQLRepo implements IEmployeeDAO {
         final Connection connection = ConnectionPool.getConnection();
 
         try (PreparedStatement ps = connection.prepareStatement(CREATE_EMPLOYEE, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setLong(1, employee.getClientID());
+            ps.setLong(1, employee.getClientId());
             ps.setLong(2, employee.getDepartmentId());
             ps.setString(3, employee.getJobTitle());
             ps.setString(4, employee.getOfficeAddress());

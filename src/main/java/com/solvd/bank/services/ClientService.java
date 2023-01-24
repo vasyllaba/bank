@@ -1,6 +1,7 @@
 package com.solvd.bank.services;
 
 import com.solvd.bank.dao.IClientDAO;
+import com.solvd.bank.dao.IPassportDAO;
 import com.solvd.bank.dao.factory.DAOFactory;
 import com.solvd.bank.exception.EntityNotFoundException;
 import com.solvd.bank.exception.IncorrectEmailException;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 
 public class ClientService {
     private IClientDAO clientDAO = DAOFactory.getFactory().getClientDAOImpl();
+    private IPassportDAO passportDAO = DAOFactory.getFactory().getPassportDAOImpl();
 
 
     private static final Logger LOGGER = Logger.getLogger(ClientService.class);
@@ -25,6 +27,17 @@ public class ClientService {
         return clientDAO.getById(id).orElseThrow(
                 () -> new EntityNotFoundException(Client.class, "id", String.valueOf(id))
         );
+    }
+
+    public Client getClientWithPassportByClientId(long id){
+        LOGGER.info("Enter into getClientById method with id: " + id);
+        Client client = clientDAO.getById(id).orElseThrow(
+                () -> new EntityNotFoundException(Client.class, "id", String.valueOf(id))
+        );
+        client.setPassport(passportDAO.getById(client.getPassportId()).orElseThrow(
+                () -> new EntityNotFoundException(Client.class, "id", String.valueOf(id))
+        ));
+        return client;
     }
 
     public boolean updateClient(Client client){

@@ -30,8 +30,8 @@ public class EmployeeService {
         Employee employee = employeeDAO.getById(id).orElseThrow(
                 () -> new EntityNotFoundException(CardDetails.class, "id", String.valueOf(id))
         );
-        employee.setClient(clientDAO.getById(employee.getClientID()).orElseThrow(
-                () -> new EntityNotFoundException(CardDetails.class, "client id", String.valueOf(employee.getClientID()))
+        employee.setClient(clientDAO.getById(employee.getClientId()).orElseThrow(
+                () -> new EntityNotFoundException(CardDetails.class, "client id", String.valueOf(employee.getClientId()))
         ));
         employee.setDepartment(departmentDAO.getById(employee.getDepartmentId()).orElseThrow(
                 () -> new EntityNotFoundException(CardDetails.class, "department id", String.valueOf(employee.getDepartmentId())))
@@ -61,6 +61,7 @@ public class EmployeeService {
         );
     }
 
+    //get fired
     public boolean removeEmployee(long id) {
         LOGGER.info("Enter into removeEmployee method with id: " + id);
 

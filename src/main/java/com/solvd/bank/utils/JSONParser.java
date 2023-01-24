@@ -12,6 +12,12 @@ public class JSONParser {
     private static final Logger LOGGER = Logger.getLogger(JSONParser.class);
     private static ObjectMapper objectMapper;
 
+    /**
+     * This method deserialize json files and create java object
+     * @param o
+     * @param path
+     * @return java object filled values from json
+     */
     public static Object deserialize(Object o, String path){
         LOGGER.info("deserialize " + o + "from json, with path " + path);
         ObjectMapper om = getObjectMapper();
@@ -23,6 +29,11 @@ public class JSONParser {
         return o;
     }
 
+    /**
+     * This method serialize models to json to file with some path
+     * @param o
+     * @param path
+     */
     public static void serialize(Object o, String path){
         LOGGER.info("serialize " + o + "to json, with path " + path);
         ObjectMapper objectMapper = getObjectMapper();

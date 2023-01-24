@@ -1,13 +1,18 @@
 package com.solvd.bank.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class Department {
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("name")
     private String name;
+    @JsonIgnore
     private List<Employee> employees;
 
     private static final Logger LOGGER = Logger.getLogger(Department.class);

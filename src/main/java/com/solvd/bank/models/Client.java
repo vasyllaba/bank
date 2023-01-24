@@ -1,5 +1,7 @@
 package com.solvd.bank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solvd.bank.enums.Role;
 import com.solvd.bank.exception.IncorrectEmailException;
 import org.apache.log4j.Logger;
@@ -7,16 +9,27 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 public class Client {
+    @JsonProperty
     private Long id;
+    @JsonProperty
     private Long passportId;
+    @JsonProperty
     private String mobile;
+    @JsonProperty
     private String email;
+    @JsonProperty
     private String password;
+    @JsonProperty
     private Role role;
+    @JsonProperty
     private Passport passport;
+    @JsonIgnore
     private List<Card> cards;
+    @JsonIgnore
     private List<Mortgage> mortgages;
+    @JsonIgnore
     private List<Deposit> deposits;
+    @JsonIgnore
     private List<Credit> credits;
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +

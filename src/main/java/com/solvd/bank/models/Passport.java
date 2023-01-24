@@ -135,8 +135,6 @@ public class Passport {
             return false;
         if (getPassportNumber() != null ? !getPassportNumber().equals(passport.getPassportNumber()) : passport.getPassportNumber() != null)
             return false;
-        if (getDate_of_birth() != null ? !getDate_of_birth().equals(passport.getDate_of_birth()) : passport.getDate_of_birth() != null)
-            return false;
         if (getPassportImage() != null ? !getPassportImage().equals(passport.getPassportImage()) : passport.getPassportImage() != null)
             return false;
         return getClient() != null ? getClient().equals(passport.getClient()) : passport.getClient() == null;
@@ -149,7 +147,6 @@ public class Passport {
         result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getPassportNumber() != null ? getPassportNumber().hashCode() : 0);
-        result = 31 * result + (getDate_of_birth() != null ? getDate_of_birth().hashCode() : 0);
         result = 31 * result + (getPassportImage() != null ? getPassportImage().hashCode() : 0);
         result = 31 * result + (getClient() != null ? getClient().hashCode() : 0);
         return result;
