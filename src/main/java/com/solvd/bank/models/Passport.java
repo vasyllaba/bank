@@ -6,8 +6,15 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.solvd.bank.utils.DateAdapter;
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+@XmlRootElement(name = "passport")
 public class Passport {
     @JsonProperty("id")
     private Long id;
@@ -55,6 +62,7 @@ public class Passport {
         return id;
     }
 
+    @XmlAttribute(name = "id")
     public void setId(Long id) {
         LOGGER.info("set Passport id");
         this.id = id;
@@ -65,6 +73,7 @@ public class Passport {
         return firstName;
     }
 
+    @XmlElement
     public void setFirstName(String firstName) {
         LOGGER.info("set Passport firstName");
         this.firstName = firstName;
@@ -79,6 +88,7 @@ public class Passport {
         LOGGER.info("set Passport lastname");
         this.lastName = lastName;
     }
+
 
     public String getPassportNumber() {
         LOGGER.info("set Passport passportNumber");
@@ -95,6 +105,7 @@ public class Passport {
         return date_of_birth;
     }
 
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public void setDate_of_birth(Date date_of_birth) {
         LOGGER.info("set Passport date_of_birth");
         this.date_of_birth = date_of_birth;

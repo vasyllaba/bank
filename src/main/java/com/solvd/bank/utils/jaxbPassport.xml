@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<passport id="4">
+    <date_of_birth>02-24-1999</date_of_birth>
+    <firstName>John</firstName>
+    <lastName>Laba</lastName>
+    <passportImage>/some/path</passportImage>
+    <passportNumber>KT1125KT</passportNumber>
+</passport>
