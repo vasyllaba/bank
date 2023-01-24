@@ -65,12 +65,6 @@ public class MySAXParser extends DefaultHandler {
         currentTag = "";
     }
 
-    @Override
-    public void endDocument() {
-        System.out.println("Stop parse XML...");
-    }
-
-
     public Client getClient(){
         return client;
     }
