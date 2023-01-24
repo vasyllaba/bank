@@ -3,15 +3,25 @@ package com.solvd.bank.models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.log4j.Logger;
 
 public class Passport {
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("firstName")
     private String firstName;
+    @JsonProperty("lastName")
     private String lastName;
+    @JsonProperty("passportNumber")
     private String passportNumber;
+    @JsonFormat(pattern = "DD-mm-yyyy")
     private Date date_of_birth;
+    @JsonProperty("passportImage")
     private String passportImage;
+    @JsonIgnore
     private Client client;
 
     private static final Logger LOGGER = Logger.getLogger(Passport.class);
