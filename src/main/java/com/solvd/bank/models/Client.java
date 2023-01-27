@@ -38,6 +38,12 @@ public class Client {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class);
 
+    public Client(String mobile, String email, String password) {
+        this.mobile = mobile;
+        this.email = email;
+        this.password = password;
+    }
+
     public Client(Long id, Long passportId, String mobile, String email, String password, Role role) {
         LOGGER.info("create new Client with id = " + id);
         this.id = id;
@@ -46,6 +52,13 @@ public class Client {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public Client(Long passportId, String mobile, String email, String password) {
+        this.passportId = passportId;
+        this.mobile = mobile;
+        this.email = email;
+        this.password = password;
     }
 
     public Client(Long passportId, String mobile, String email, String password, Role role) {
